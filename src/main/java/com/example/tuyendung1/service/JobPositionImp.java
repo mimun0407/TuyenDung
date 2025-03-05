@@ -1,6 +1,7 @@
 package com.example.tuyendung1.service;
 
 import com.example.tuyendung1.dto.JobPositionDto;
+import com.example.tuyendung1.dto.Specification.SpecJobPosition;
 import com.example.tuyendung1.dto.model.Department;
 import com.example.tuyendung1.dto.model.Line;
 import com.example.tuyendung1.dto.model.Position;
@@ -19,6 +20,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -96,40 +98,46 @@ public class JobPositionImp implements ServiceIJobPosition {
         return jobPositionDto;
     }
 
-    public PageResponse<JobPositionDto> findAll(int page, int size,String name) {
-
-        Sort sort = Sort.by("created_at").descending();
+    public PageResponse<JobPositionDto> findAll(int page, int size,JobPositionDto jobPositionDto) {
+        Sort sort = Sort.by("createdAt").descending();
         Pageable pageable = PageRequest.of(page - 1, size, sort);
 
-        Page<Object[]> pageData = jobPositionRepository.findAllWithDetails(name,pageable);
+        Specification<JobPosition> spec = new SpecJobPosition(jobPositionDto);
+        Page<JobPosition> jobPositionPage = jobPositionRepository.findAll(spec, pageable);
 
-        List<JobPositionDto> jobPositionDtos = pageData.getContent().stream().map(obj -> {
+        List<Long> jobPositionIds = jobPositionPage.getContent().stream().map(JobPosition::getId).toList();
+        List<JobPositionMap> jobPositionMaps = jobPositionMapRepository.findByJobPositionIds(jobPositionIds);
+
+        Map<Long, List<JobPositionMap>> jobPositionMapGrouped = jobPositionMaps.stream()
+                .collect(Collectors.groupingBy(jpm -> jpm.getJobPosition().getId()));
+
+        // Chuyển đổi Page<JobPosition> thành List<JobPositionDto>
+        List<JobPositionDto> jobPositionDtos = jobPositionPage.getContent().stream().map(jobPosition -> {
             JobPositionDto dto = new JobPositionDto();
-            dto.setName((String) obj[1]);
-            dto.setCode((String) obj[2]);
-            dto.setDescription((String) obj[3]);
+            dto.setId(jobPosition.getId());
+            dto.setCode(jobPosition.getCode());
+            dto.setDescription(jobPosition.getDescription());
+            dto.setIndustry(jobPosition.getIndustry());
 
-            Industry industry = new Industry();
-            industry.setId(((Number) obj[4]).longValue());
-            dto.setIndustry(industry);
+            List<JobPositionMap> maps = jobPositionMapGrouped.getOrDefault(jobPosition.getId(), new ArrayList<>());
+            List<Line> lines = maps.stream().map(jpm -> {
+                Department department = new Department(jpm.getDepartmentId());
+                Set<Position> positions = jpm.getPositionIds().stream().map(Position::new).collect(Collectors.toSet());
+                return new Line(department, positions);
+            }).collect(Collectors.toList());
 
-            Department department = new Department(((Number) obj[5]).longValue());
-
-            List<Long> positionIds = Arrays.asList((Long[]) obj[6]);
-            Set<Position> positions = positionIds.stream().map(Position::new).collect(Collectors.toSet());
-
-            dto.setLine(List.of(new Line(department, positions)));
-
+            dto.setLine(lines);
             return dto;
-        }).collect(Collectors.toList());
+        }).toList();
 
+        // Trả về PageResponse<JobPositionDto>
         return PageResponse.<JobPositionDto>builder()
-                .page(page)
-                .size(size)
-                .totalElements(pageData.getTotalElements())
+                .page(jobPositionPage.getNumber())
+                .size(jobPositionPage.getSize())
+                .totalElements(jobPositionPage.getTotalElements())
+                .totalPages(jobPositionPage.getTotalPages())
+                .numberOfElements(jobPositionPage.getNumberOfElements())
                 .sortBy(sort.toString())
-                .totalPages(pageData.getTotalPages())
-                .numberOfElements(pageData.getNumberOfElements())
                 .content(jobPositionDtos)
                 .build();
     }

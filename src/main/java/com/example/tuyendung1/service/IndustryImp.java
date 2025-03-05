@@ -3,6 +3,7 @@ package com.example.tuyendung1.service;
 import com.example.tuyendung1.dto.IndustryDto;
 import com.example.tuyendung1.dto.responseApi.PageResponse;
 import com.example.tuyendung1.dto.responseApi.ResponseId;
+import com.example.tuyendung1.dto.Specification.SpecIndustry;
 import com.example.tuyendung1.entity.Industry;
 import com.example.tuyendung1.mapper.IndustryMap;
 import com.example.tuyendung1.repository.IndustryRepo;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @RequiredArgsConstructor
@@ -52,10 +54,11 @@ public class IndustryImp implements ServiceIndustry{
     }
 
     @Override
-    public PageResponse<IndustryDto> findAll(int page, int size,String name) {
+    public PageResponse<IndustryDto> findAll(int page, int size,IndustryDto industryDto) {
+        Specification<Industry> specification=new SpecIndustry(industryDto);
         Sort sort= Sort.by("createdAt").descending();
         Pageable pageable = PageRequest.of(page-1, size, sort);
-        var pageData=industryRepo.findAllByName(name, pageable);
+        var pageData=industryRepo.findAll(specification, pageable);
         return PageResponse.<IndustryDto>builder()
                 .page(page)
                 .size(size)

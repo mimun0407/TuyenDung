@@ -5,6 +5,7 @@ import com.example.tuyendung1.dto.responseApi.ApiResponse;
 import com.example.tuyendung1.dto.responseApi.PageResponse;
 import com.example.tuyendung1.dto.responseApi.ResponseId;
 import com.example.tuyendung1.service.ServiceIndustry;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +16,7 @@ public class IndustryController {
     private final ServiceIndustry serviceIndustry;
 
     @PostMapping()
-    public ApiResponse<ResponseId> industryPost(@RequestBody IndustryDto industryDto) {
+    public ApiResponse<ResponseId> industryPost(@RequestBody @Valid IndustryDto industryDto) {
         return ApiResponse
                 .<ResponseId>builder()
                 .data(serviceIndustry.insert(industryDto))
@@ -26,9 +27,13 @@ public class IndustryController {
     public ApiResponse<PageResponse<IndustryDto>> industryList
             (@RequestParam(value = "page", required = false, defaultValue = "1") int page,
              @RequestParam(value = "size", required = false, defaultValue = "20") int size,
-    @RequestParam(value = "name",required = false) String name) {
+             @RequestParam(value = "name",required = false)String name,
+            @RequestParam (value = "code",required = false)String code){
+        IndustryDto industryDto = new IndustryDto();
+        industryDto.setName(name);
+        industryDto.setCode(code);
         return ApiResponse.<PageResponse<IndustryDto>>builder()
-                .data(serviceIndustry.findAll(page, size,name))
+                .data(serviceIndustry.findAll(page, size,industryDto))
                 .build();
     }
 
@@ -40,7 +45,7 @@ public class IndustryController {
     }
 
     @PutMapping()
-    public ApiResponse<ResponseId> industryUpdate(@RequestBody IndustryDto industryDto) {
+    public ApiResponse<ResponseId> industryUpdate(@RequestBody @Valid IndustryDto industryDto) {
         return ApiResponse.<ResponseId>builder()
                 .data(serviceIndustry.Update(industryDto))
                 .build();
