@@ -2,8 +2,6 @@ package com.example.tuyendung1.dto.responseApi;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-import org.springframework.data.domain.Sort;
-
 import java.util.Collections;
 import java.util.List;
 
@@ -20,5 +18,6 @@ public class PageResponse<T> {
     int totalPages;
     int numberOfElements;
     String sortBy;
+    @Builder.Default
     List<T> content= Collections.emptyList();
 }

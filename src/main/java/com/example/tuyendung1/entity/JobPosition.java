@@ -1,31 +1,22 @@
 package com.example.tuyendung1.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
-
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
 @Table(name = "job_position")
+@FieldDefaults(level = AccessLevel.PRIVATE)
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class JobPosition extends EntityFather{
-    @JoinColumn(name = "industry_id")
+    String code;
+    String description;
     @ManyToOne
-    private Industry industryId;
-
-    @Column(name = "name", length = 250)
-    private String name;
-
-    @Column(name = "code", length = 250)
-    private String code;
-
-    @Column(name = "description", length = 250)
-    private String description;
-
+    @JoinColumn(name = "industry_id", referencedColumnName = "id", nullable = false)
+    Industry industry;
 }

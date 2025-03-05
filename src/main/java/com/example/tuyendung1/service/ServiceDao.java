@@ -3,12 +3,11 @@ package com.example.tuyendung1.service;
 import com.example.tuyendung1.dto.responseApi.PageResponse;
 import com.example.tuyendung1.dto.responseApi.ResponseId;
 
-import java.util.List;
 
-public interface ServiceDao<T,F> {
+public interface ServiceDao<T> {
     ResponseId insert(T t);
-    ResponseId Update(F f);
+    ResponseId Update(T t);
     void delete(Long id);
     T findById(Long id);
-    PageResponse<T> findAll(int page, int size);
+    PageResponse<T> findAll(int page, int size,String name);
 }

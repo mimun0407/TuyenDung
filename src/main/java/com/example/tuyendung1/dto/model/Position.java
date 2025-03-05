@@ -7,6 +7,5 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Position {
-    int id;
-    String name;
+    Long id;
 }

@@ -12,15 +12,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class Industry extends EntityFather {
-
-    @Column(name = "code")
-    private String code;
-
-    @Column(name = "active")
-    private boolean active;
-
-    @Column(name = "description")
-    private String description;
-
+     String code;
+     String description;
 }
 

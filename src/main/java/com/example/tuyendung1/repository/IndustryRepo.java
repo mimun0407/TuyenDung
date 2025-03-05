@@ -9,5 +9,5 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface IndustryRepo extends JpaRepository<Industry, Long> {
     boolean existsByCode(String code);
-    Page<Industry>findAll(Pageable pageable);
+    Page<Industry>findAllByName(String name,Pageable pageable);
 }

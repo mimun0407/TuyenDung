@@ -3,8 +3,10 @@ package com.example.tuyendung1.entity;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
-import java.util.Set;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor
@@ -14,17 +16,21 @@ import java.util.Set;
 @Table(name = "job_position_map")
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class JobPositionMap {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    Long id;
+
+    @ManyToOne(cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "job_position_id", nullable = false)
+    JobPosition jobPosition;
 
     @Column(name = "department_id")
-    private Long departmentId;
+    Long departmentId;
 
-    @ManyToOne
-    private JobPosition jobPosition;
+    @Column(name = "position_ids", columnDefinition = "bigint[]")
+    @JdbcTypeCode(SqlTypes.ARRAY)
+    List<Long> positionIds;
 
-    @ElementCollection
-    @Column(name = "position_id")
-    private Set<Long> positionId;
 }
+
