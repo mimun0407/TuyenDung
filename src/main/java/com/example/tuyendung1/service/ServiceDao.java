@@ -1,7 +1,6 @@
 package com.example.tuyendung1.service;
 
 import com.example.tuyendung1.dto.responseApi.PageResponse;
-import com.example.tuyendung1.dto.responseApi.PaginateRequest;
 import com.example.tuyendung1.dto.responseApi.ResponseId;
 
 
