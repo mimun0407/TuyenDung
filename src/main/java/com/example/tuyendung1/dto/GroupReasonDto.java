@@ -11,9 +11,10 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TagDto {
+public class GroupReasonDto {
     Long id;
-    @NotEmpty(message = "name can't be empty")
+    String code;
     String name;
+    String description;
     Boolean isActive;
 }

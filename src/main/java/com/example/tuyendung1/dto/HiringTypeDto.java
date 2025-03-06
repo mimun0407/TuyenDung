@@ -1,7 +1,6 @@
 package com.example.tuyendung1.dto;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
@@ -11,9 +10,10 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class TagDto {
+public class HiringTypeDto {
     Long id;
-    @NotEmpty(message = "name can't be empty")
+    String code;
     String name;
+    String description;
     Boolean isActive;
 }

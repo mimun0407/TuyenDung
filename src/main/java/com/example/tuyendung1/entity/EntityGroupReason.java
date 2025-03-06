@@ -5,12 +5,14 @@ import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-@Table(name ="Tag")
+@Table(name ="group_reason")
 @Entity
 @AllArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Setter
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class EntityTag extends EntityFather{
-
+public class EntityGroupReason extends EntityFather{
+    String code;
+    String description;
 }
