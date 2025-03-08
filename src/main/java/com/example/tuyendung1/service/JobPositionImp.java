@@ -111,7 +111,6 @@ public class JobPositionImp implements ServiceIJobPosition {
         Map<Long, List<JobPositionMap>> jobPositionMapGrouped = jobPositionMaps.stream()
                 .collect(Collectors.groupingBy(jpm -> jpm.getJobPosition().getId()));
 
-        // Chuyển đổi Page<JobPosition> thành List<JobPositionDto>
         List<JobPositionDto> jobPositionDtos = jobPositionPage.getContent().stream().map(jobPosition -> {
             JobPositionDto dto = new JobPositionDto();
             dto.setId(jobPosition.getId());

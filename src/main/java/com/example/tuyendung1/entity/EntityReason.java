@@ -3,10 +3,8 @@ package com.example.tuyendung1.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.FieldDefaults;
 
 @Table(name ="reason")
 @Entity
@@ -14,6 +12,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Setter
 @Getter
+@FieldDefaults(level = AccessLevel.PRIVATE)
+
 public class EntityReason extends EntityFather{
     String description;
     @ManyToOne

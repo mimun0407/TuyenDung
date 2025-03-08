@@ -21,9 +21,5 @@ public class IndustryDto {
     boolean active;
     String description;
 
-    public IndustryDto(String name, String code) {
-        this.name = name;
-        this.code = code;
-    }
 }
 

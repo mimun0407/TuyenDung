@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="9" author="your_name">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="job_position"/>
+            </not>
+        </preConditions>
+        <createTable tableName="job_position">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="is_active" type="boolean" defaultValue="true"/>
+            <column name="created_at" type="timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="updated_at" type="timestamp"/>
+            <column name="code" type="varchar(255)"/>
+            <column name="description" type="varchar(255)"/>
+            <column name="industry_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="job_position"
+                baseColumnNames="industry_id"
+                constraintName="fk_job_position_industry"
+                referencedTableName="industry"
+                referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

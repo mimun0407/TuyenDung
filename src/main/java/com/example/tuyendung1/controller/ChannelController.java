@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequiredArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
-@RequestMapping("api/v1/candidate")
+@RequestMapping("api/v1/channel")
 public class ChannelController {
 
     ServiceIChannel serviceIChannel;

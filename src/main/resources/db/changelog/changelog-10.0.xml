@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet id="10" author="your_name">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="job_position_map"/>
+            </not>
+        </preConditions>
+        <createTable tableName="job_position_map">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="job_position_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="department_id" type="bigint"/>
+            <column name="position_ids" type="bigint[]"/>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="job_position_map"
+                baseColumnNames="job_position_id"
+                constraintName="fk_job_position_map_job_position"
+                referencedTableName="job_position"
+                referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

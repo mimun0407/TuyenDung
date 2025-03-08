@@ -26,6 +26,7 @@ public class ReasonImp implements ServiceIReason{
     ReasonRepo reasonRepo;
     ReasonMapper reasonMapper;
     GroupReasonMapper groupReasonMapper;
+
     @Override
     public ResponseId insert(ReasonDto reasonDto) {
       EntityReason reason= reasonMapper.toEntityReason(reasonDto);

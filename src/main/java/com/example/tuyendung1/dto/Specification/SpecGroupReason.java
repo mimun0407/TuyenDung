@@ -1,9 +1,7 @@
 package com.example.tuyendung1.dto.Specification;
 
 import com.example.tuyendung1.dto.GroupReasonDto;
-import com.example.tuyendung1.dto.IndustryDto;
 import com.example.tuyendung1.entity.EntityGroupReason;
-import com.example.tuyendung1.entity.Industry;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
