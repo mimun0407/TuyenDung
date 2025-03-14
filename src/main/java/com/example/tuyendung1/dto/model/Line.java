@@ -8,6 +8,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 public class Line {
+    Long id;
     Department department;
     Set<Position> positionSet;
 }

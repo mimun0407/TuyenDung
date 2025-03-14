@@ -4,7 +4,7 @@ import com.example.tuyendung1.dto.IndustryDto;
 import com.example.tuyendung1.dto.responseApi.ApiResponse;
 import com.example.tuyendung1.dto.responseApi.PageResponse;
 import com.example.tuyendung1.dto.responseApi.ResponseId;
-import com.example.tuyendung1.service.ServiceIndustry;
+import com.example.tuyendung1.service.interfaceService.ServiceIndustry;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

@@ -4,7 +4,7 @@ import com.example.tuyendung1.dto.ChannelDto;
 import com.example.tuyendung1.dto.responseApi.ApiResponse;
 import com.example.tuyendung1.dto.responseApi.PageResponse;
 import com.example.tuyendung1.dto.responseApi.ResponseId;
-import com.example.tuyendung1.service.ServiceIChannel;
+import com.example.tuyendung1.service.interfaceService.ServiceIChannel;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

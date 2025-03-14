@@ -4,7 +4,7 @@ import com.example.tuyendung1.dto.TagDto;
 import com.example.tuyendung1.dto.responseApi.ApiResponse;
 import com.example.tuyendung1.dto.responseApi.PageResponse;
 import com.example.tuyendung1.dto.responseApi.ResponseId;
-import com.example.tuyendung1.service.ServiceITag;
+import com.example.tuyendung1.service.interfaceService.ServiceITag;
 
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

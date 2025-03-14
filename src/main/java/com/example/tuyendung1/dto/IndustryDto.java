@@ -20,6 +20,9 @@ public class IndustryDto {
     String name;
     boolean active;
     String description;
-
+    public IndustryDto(Long id, String name) {
+        this.id = id;
+        this.name = name;
+    }
 }
 

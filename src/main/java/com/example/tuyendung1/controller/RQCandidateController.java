@@ -4,7 +4,7 @@ import com.example.tuyendung1.dto.RQCandidateDto;
 import com.example.tuyendung1.dto.responseApi.ApiResponse;
 import com.example.tuyendung1.dto.responseApi.PageResponse;
 import com.example.tuyendung1.dto.responseApi.ResponseId;
-import com.example.tuyendung1.service.ServiceIQrCandidate;
+import com.example.tuyendung1.service.interfaceService.ServiceIQrCandidate;
 import jakarta.validation.Valid;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;

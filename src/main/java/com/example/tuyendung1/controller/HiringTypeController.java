@@ -3,7 +3,7 @@ import com.example.tuyendung1.dto.HiringTypeDto;
 import com.example.tuyendung1.dto.responseApi.ApiResponse;
 import com.example.tuyendung1.dto.responseApi.PageResponse;
 import com.example.tuyendung1.dto.responseApi.ResponseId;
-import com.example.tuyendung1.service.ServiceIHiringType;
+import com.example.tuyendung1.service.interfaceService.ServiceIHiringType;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;

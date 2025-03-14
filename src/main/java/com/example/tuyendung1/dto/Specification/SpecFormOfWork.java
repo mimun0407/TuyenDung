@@ -18,11 +18,9 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE, makeFinal = true)
 public class SpecFormOfWork implements Specification<EntityFormOfWork> {
     FormOfWorkDto formOfWorkDto;
-
     @Override
     public jakarta.persistence.criteria.Predicate toPredicate(Root<EntityFormOfWork> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
         List<Predicate> predicates = new ArrayList<>();
-
         if (formOfWorkDto.getCode() != null) {
             predicates.add(criteriaBuilder.equal(root.get("code"), formOfWorkDto.getCode()));
         }
@@ -34,4 +32,5 @@ public class SpecFormOfWork implements Specification<EntityFormOfWork> {
         }
         return query.getRestriction();
     }
+    Object object=new ArrayList<>();
 }

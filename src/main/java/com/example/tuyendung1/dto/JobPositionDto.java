@@ -25,7 +25,7 @@ public class JobPositionDto {
     @NotEmpty(message = "code can not be empty")
     String code;
     String description;
-    Industry industry;
+    IndustryDto industryDto;
     List<Line> line=new ArrayList<>();
 
     public JobPositionDto(String name, String code) {
