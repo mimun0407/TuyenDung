@@ -16,4 +16,6 @@ public interface JobPositionMapRepository extends JpaRepository<JobPositionMap, 
     List<JobPositionMap> findByJobPositionIds(@Param("jobPositionIds") List<Long> jobPositionIds);
 
     List<JobPositionMap> findAllByJobPositionId(Long id);
+
+    List<JobPositionMap>findAllByJobPositionIdIn( List<Long> jobPositionIds);
 }

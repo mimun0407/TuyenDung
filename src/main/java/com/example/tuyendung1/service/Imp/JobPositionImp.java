@@ -1,7 +1,7 @@
 package com.example.tuyendung1.service.Imp;
-
 import com.example.tuyendung1.dto.IndustryDto;
 import com.example.tuyendung1.dto.JobPositionDto;
+import com.example.tuyendung1.dto.Specification.SpecJobPosition;
 import com.example.tuyendung1.dto.model.Department;
 import com.example.tuyendung1.dto.model.Line;
 import com.example.tuyendung1.dto.model.Position;
@@ -20,11 +20,21 @@ import com.example.tuyendung1.service.feign.PositionService;
 import com.example.tuyendung1.service.interfaceService.ServiceIJobPosition;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Transactional
 @Service
 @RequiredArgsConstructor
@@ -36,7 +46,7 @@ public class JobPositionImp implements ServiceIJobPosition {
     private final IndustryMap industryMap;
     private final DepartmentService resourceService;
     private final PositionService positionService;
-
+    private final MessageSource messageSource;
     @Transactional
     public ResponseId insert(JobPositionDto dto) {
         JobPosition jobPosition=jobPositionMapper.toEntity(dto);
@@ -44,11 +54,11 @@ public class JobPositionImp implements ServiceIJobPosition {
         jobPosition.setIndustry(industry);
         jobPositionRepository.save(jobPosition);
         List<Line>line= dto.getLine();
-        List<Department> departments=resourceService.getDepartment(line.stream().map(line1 -> line1.getDepartment().getId()).toList());
         for (int i=0;i<line.size()-1;i++) {
             for (int j=i+1;j<line.size();j++) {
                 if (line.get(i).getDepartment().getId().equals(line.get(j).getDepartment().getId())) {
-                    throw new RuntimeException("Can not insert duplicate department");
+                    String ms=messageSource.getMessage("line.insert.error",null,Locale.getDefault());
+                    throw new RuntimeException(ms);
                 }
             }
         }
@@ -62,8 +72,9 @@ public class JobPositionImp implements ServiceIJobPosition {
             }
             jobPositionMap.setPositionIds(positionIDs);
             jobPositionMap.setJobPosition(jobPosition);
-            jobPositionMap.setDepartmentId(jobPositionMap.getDepartmentId());
+            jobPositionMap.setDepartmentId(line1.getDepartment().getId());
             jobPositionMapRepository.save(jobPositionMap);
+
         }
         return new ResponseId(jobPosition.getId());
     }
@@ -75,8 +86,9 @@ public class JobPositionImp implements ServiceIJobPosition {
     }
 
     public JobPositionDto findById(Long id) {
+        String ms = messageSource.getMessage("id.cannot.found", null, LocaleContextHolder.getLocale());
         JobPosition jobPosition = jobPositionRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Cannot find job position"));
+                .orElseThrow(() -> new RuntimeException(ms));
 
         JobPositionDto jobPositionDto = jobPositionMapper.toDto(jobPosition);
         jobPositionDto.setIndustryDto(new IndustryDto(jobPosition.getIndustry().getId(), jobPosition.getIndustry().getName()));
@@ -118,14 +130,36 @@ public class JobPositionImp implements ServiceIJobPosition {
     }
 
 
-    public PageResponse<JobPositionDto> findAll(int page, int size,JobPositionDto jobPositionDto) {
-        return null;
-    }
+    public PageResponse<JobPositionDto> findAll(int page, int size, JobPositionDto jobPositionDto) {
+        Sort sort = Sort.by("createdAt").descending();
+        Pageable pageable = PageRequest.of(page - 1, size, sort);
 
+        Specification<JobPosition> specification = new SpecJobPosition(jobPositionDto);
+        Page<JobPosition> jobData = jobPositionRepository.findAll(specification, pageable);
+        List<JobPosition> jobDataList = jobData.getContent();
+        List<JobPositionDto> jobPositionDtoList = new ArrayList<>();
+        for (JobPosition jobPosition:jobDataList) {
+            JobPositionDto jobPositionDto1=jobPositionMapper.toDto(jobPosition);
+            IndustryDto industryDto=new IndustryDto(jobPosition.getIndustry().getId(), jobPosition.getIndustry().getName());
+            jobPositionDto1.setIndustryDto(industryDto);
+            jobPositionDtoList.add(jobPositionDto1);
+        }
+        return PageResponse.<JobPositionDto>builder()
+                .totalPages(jobData.getTotalPages())
+                .totalElements(jobData.getTotalElements())
+                .sortBy(sort.toString())
+                .page(page)
+                .size(size)
+                .numberOfElements(jobData.getNumberOfElements())
+                .content(jobPositionDtoList)
+                .build();
+
+    }
     @Transactional
     public ResponseId Update(JobPositionDto dto) {
+        String ms=messageSource.getMessage("id.cannot.found",null,Locale.getDefault());
         JobPosition jobPosition  =jobPositionRepository.findById(dto.getId())
-                .orElseThrow(()->new RuntimeException("Can not find job position"));
+                .orElseThrow(()->new RuntimeException(ms));
         jobPosition.setId(dto.getId());
         jobPosition.setName(dto.getName());
         jobPosition.setDescription(dto.getDescription());

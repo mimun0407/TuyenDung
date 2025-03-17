@@ -7,7 +7,10 @@ import com.example.tuyendung1.dto.responseApi.ResponseId;
 import com.example.tuyendung1.service.interfaceService.ServiceIJobPosition;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.MessageSource;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Locale;
 
 @RestController
 @RequiredArgsConstructor
@@ -15,12 +18,17 @@ import org.springframework.web.bind.annotation.*;
 public class JobPositionController {
 
     private final ServiceIJobPosition serviceIJobPosition;
+    private final MessageSource messageSource;
 
 
-    @PostMapping()
-        public ApiResponse<ResponseId> addJobPosition(@RequestBody @Valid JobPositionDto jobPosition) {
+    @PostMapping
+    public ApiResponse<ResponseId> addJobPosition(@RequestBody @Valid JobPositionDto jobPosition,
+                                                  @RequestHeader(name = "Accept-Language", required = false) String acceptLanguage) {
+        Locale locale = (acceptLanguage != null) ? Locale.forLanguageTag(acceptLanguage) : Locale.getDefault();
+        String message = messageSource.getMessage("job.position.add.success", null, locale);
         return ApiResponse.<ResponseId>builder()
-                .data(serviceIJobPosition.insert(jobPosition) )
+                .data(serviceIJobPosition.insert(jobPosition))
+                .message(message)
                 .build();
     }
     @GetMapping("/list")

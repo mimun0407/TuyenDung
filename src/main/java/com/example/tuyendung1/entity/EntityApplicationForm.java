@@ -15,5 +15,4 @@ import lombok.experimental.FieldDefaults;
 public class EntityApplicationForm extends EntityFather{
     String code;
     String description;
-
 }
