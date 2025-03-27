@@ -1,7 +1,6 @@
 package com.example.tuyendung1.entity;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
@@ -14,6 +13,4 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class EntityChannel extends EntityFather{
-    @ManyToOne
-    EntityCandidate candidate;
 }
