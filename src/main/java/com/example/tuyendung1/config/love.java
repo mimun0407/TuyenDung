@@ -6,4 +6,6 @@ public class love {
     int id;
     String name;
     BigDecimal salary;
+
+    int age;
 }
